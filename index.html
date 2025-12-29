@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Training Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile-responsive.css">
+    <link rel="stylesheet" href="desktop-compact.css">
+    <link rel="stylesheet" href="logo-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1><img src="logo.png" alt="Training Portal" class="logo"></h1>
+            <a href="admin.html" class="admin-link"><i class="fas fa-user-shield"></i>Login</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2><i class="fas fa-book-open"></i> Professional Training Programs</h2>
+        </section>
+
+        <section class="trainings" id="trainings-container">
+            <!-- Training posts will be dynamically loaded here -->
+        </section>
+    </main>
+
+    <script>
+        // Load and display trainings on homepage
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTrainings();
+            // Track visitor
+            fetch('visitor_tracker.php', { method: 'POST' });
+        });
+
+        function loadTrainings() {
+            fetch('training_api.php')
+                .then(response => response.json())
+                .then(trainings => {
+                    const container = document.getElementById('trainings-container');
+                    
+                    if (trainings.length === 0) {
+                        container.innerHTML = '<p style="text-align: center; color: #666; font-size: 1.2rem; margin: 2rem;">No trainings available at the moment.</p>';
+                        return;
+                    }
+                    
+                    container.innerHTML = trainings.map((training, index) => `
+                        <div class="training-card" ${training.image ? `style="background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('${training.image}'); background-size: cover; background-position: center; animation-delay: ${index * 0.1}s;"` : `style="animation-delay: ${index * 0.1}s;"`}>
+                            <h3><i class="fas fa-chalkboard-teacher"></i> ${training.name}</h3>
+                            <div class="training-info">
+                                <span><i class="fas fa-building"></i> <strong>Organization:</strong> ${training.organization}</span>
+                                <span><i class="fas fa-calendar-alt"></i> <strong>Date & Time:</strong> ${formatDateTime(training.dateTime)}</span>
+                                <span class="countdown" data-datetime="${training.dateTime}"><i class="fas fa-clock"></i> <strong>Time Left:</strong> <span class="countdown-text">Calculating...</span></span>
+                                <span><i class="fas fa-money-bill-wave"></i> <strong>Fee:</strong> ৳${training.fee}</span>
+                                ${training.discountCode ? `<span><i class="fas fa-tag"></i> <strong>Discount Code:</strong> ${training.discountCode}</span>` : ''}
+                            </div>
+                            <p><i class="fas fa-info-circle"></i> ${training.description.substring(0, 150)}${training.description.length > 150 ? '...' : ''}</p>
+                            <div class="training-actions">
+                                <a href="details.html?id=${training.id}" class="btn btn-primary"><i class="fas fa-eye"></i> View Details</a>
+                                <a href="${training.applyLink || 'https://forms.gle/eu4ZGNkZT5RNfhAp9'}" target="_blank" class="btn btn-success"><i class="fas fa-paper-plane"></i> Apply Now</a>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    // Start countdown timers
+                    startCountdowns();
+                })
+                .catch(error => {
+                    console.error('Error loading trainings:', error);
+                    document.getElementById('trainings-container').innerHTML = '<p style="text-align: center; color: #e74c3c;">Error loading trainings. Please try again later.</p>';
+                });
+        }
+
+        function formatDateTime(dateTimeString) {
+            const date = new Date(dateTimeString);
+            return date.toLocaleDateString() + ' at ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+
+        function startCountdowns() {
+            const countdowns = document.querySelectorAll('.countdown');
+            
+            function updateCountdowns() {
+                countdowns.forEach(countdown => {
+                    const targetDate = new Date(countdown.dataset.datetime);
+                    const now = new Date();
+                    const timeDiff = targetDate - now;
+                    
+                    if (timeDiff > 0) {
+                        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                        
+                        let timeText = '';
+                        if (days > 0) timeText += `${days}d `;
+                        if (hours > 0) timeText += `${hours}h `;
+                        timeText += `${minutes}m`;
+                        
+                        countdown.querySelector('.countdown-text').textContent = timeText;
+                        countdown.style.color = '#27ae60';
+                    } else {
+                        countdown.querySelector('.countdown-text').textContent = 'TIME UP';
+                        countdown.style.color = '#e74c3c';
+                        countdown.style.fontWeight = 'bold';
+                    }
+                });
+            }
+            
+            updateCountdowns();
+            setInterval(updateCountdowns, 60000); // Update every minute
+        }
+
+        // Sticky navigation with scroll effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('header');
+            const nav = document.querySelector('nav');
+            const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+            
+            // Chrome-specific navigation fix
+            if (isChrome) {
+                nav.style.setProperty('display', 'flex', 'important');
+                nav.style.setProperty('flex-direction', 'row', 'important');
+                nav.style.setProperty('justify-content', 'space-between', 'important');
+                nav.style.setProperty('align-items', 'center', 'important');
+            }
+            
+            // Add scroll event listener
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                    header.style.backdropFilter = 'blur(10px)';
+                    header.style.color = '#2c3e50';
+                    header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+                    
+                    // Change nav link colors
+                    const navLinks = nav.querySelectorAll('a, button');
+                    navLinks.forEach(link => {
+                        link.style.color = '#2c3e50';
+                        link.style.borderColor = '#27ae60';
+                    });
+                    
+                    // Maintain Chrome layout on scroll
+                    if (isChrome) {
+                        nav.style.setProperty('justify-content', 'space-between', 'important');
+                    }
+                } else {
+                    header.style.background = '#2c3e50';
+                    header.style.backdropFilter = 'none';
+                    header.style.color = 'white';
+                    header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+                    
+                    // Reset nav link colors
+                    const navLinks = nav.querySelectorAll('a, button');
+                    navLinks.forEach(link => {
+                        link.style.color = 'white';
+                        link.style.borderColor = 'white';
+                    });
+                    
+                    // Maintain Chrome layout
+                    if (isChrome) {
+                        nav.style.setProperty('justify-content', 'space-between', 'important');
+                    }
+                }
+            });
+        });
+
+
+    </script>
+</body>
+</html>

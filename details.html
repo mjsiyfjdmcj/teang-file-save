@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Details - English Training Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="logo-styles.css">
+    <link rel="stylesheet" href="details-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1><img src="logo.png" alt="Training Portal" class="logo"></h1>
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </nav>
+    </header>
+
+    <main class="training-details">
+        <div id="training-content">
+            <!-- Training details will be loaded here -->
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const trainingId = urlParams.get('id');
+            
+            if (!trainingId) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            loadTrainingDetails(trainingId);
+        });
+
+        function loadTrainingDetails(id) {
+            fetch('training_api.php?details=true')
+                .then(response => response.json())
+                .then(trainings => {
+                    const training = trainings.find(t => t.id == id);
+                    
+                    if (!training) {
+                        document.getElementById('training-content').innerHTML = `
+                            <div class="training-detail-card">
+                                <h2>Training Not Found</h2>
+                                <p>The requested training could not be found.</p>
+                                <a href="index.html" class="btn btn-primary">Back to Home</a>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    document.getElementById('training-content').innerHTML = `
+                        <div class="training-detail-card">
+                            <h2>${training.name}</h2>
+                            
+                            ${training.image ? `<img src="${training.image}" alt="${training.name}" class="training-detail-image">` : ''}
+                                <div class="detail-info-card">
+                                    <h3>Organization</h3>
+                                    <p>${training.organization}</p>
+                                </div>
+                                
+                                <div class="detail-info-card">
+                                    <h3>Date & Time</h3>
+                                    <p>${formatDateTime(training.dateTime)}</p>
+                                </div>
+                                
+                                <div class="detail-info-card">
+                                    <h3>Training Fee</h3>
+                                    <p>৳${training.fee}</p>
+                                </div>
+                                
+                                ${training.discountCode ? `
+                                    <div class="detail-info-card">
+                                        <h3>Discount Code</h3>
+                                        <p>${training.discountCode}</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                            
+                            <div class="description-section">
+                                <h3>Description</h3>
+                                <p>${training.description}</p>
+                            </div>
+                            
+                            <div class="apply-section">
+                                <h3>Ready to Join?</h3>
+                                <p>ট্রেনিং মিস করো না!</p>
+                                <button class="btn" onclick="window.open('${training.applyLink || 'https://forms.gle/eu4ZGNkZT5RNfhAp9'}', '_blank')"><i class="fas fa-paper-plane"></i> Apply Now</button>
+                            </div>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error loading training details:', error);
+                    document.getElementById('training-content').innerHTML = `
+                        <div class="training-detail-card">
+                            <h2>Error Loading Training</h2>
+                            <p>Unable to load training details. Please try again later.</p>
+                            <a href="index.html" class="btn btn-primary">Back to Home</a>
+                        </div>
+                    `;
+                });
+        }
+
+        function formatDateTime(dateTimeString) {
+            const date = new Date(dateTimeString);
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        // Sticky navigation with scroll effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('header');
+            const nav = document.querySelector('nav');
+            const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+            
+            // Chrome-specific navigation fix
+            if (isChrome) {
+                nav.style.setProperty('display', 'flex', 'important');
+                nav.style.setProperty('flex-direction', 'row', 'important');
+                nav.style.setProperty('justify-content', 'space-between', 'important');
+                nav.style.setProperty('align-items', 'center', 'important');
+            }
+            
+            // Add scroll event listener
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                    header.style.backdropFilter = 'blur(10px)';
+                    header.style.color = '#2c3e50';
+                    header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+                    
+                    // Change nav link colors
+                    const navLinks = nav.querySelectorAll('a, button');
+                    navLinks.forEach(link => {
+                        link.style.color = '#2c3e50';
+                        link.style.borderColor = '#27ae60';
+                    });
+                    
+                    // Maintain Chrome layout on scroll
+                    if (isChrome) {
+                        nav.style.setProperty('justify-content', 'space-between', 'important');
+                    }
+                } else {
+                    header.style.background = '#2c3e50';
+                    header.style.backdropFilter = 'none';
+                    header.style.color = 'white';
+                    header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+                    
+                    // Reset nav link colors
+                    const navLinks = nav.querySelectorAll('a, button');
+                    navLinks.forEach(link => {
+                        link.style.color = 'white';
+                        link.style.borderColor = 'white';
+                    });
+                    
+                    // Maintain Chrome layout
+                    if (isChrome) {
+                        nav.style.setProperty('justify-content', 'space-between', 'important');
+                    }
+                }
+            });
+        });
+
+
+    </script>
+</body>
+</html>

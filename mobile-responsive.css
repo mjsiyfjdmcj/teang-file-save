@@ -1,0 +1,288 @@
+/* Mobile Responsive Fixes */
+
+@media (max-width: 768px) {
+    /* Header Navigation */
+    nav {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    nav h1 {
+        font-size: 1.2rem;
+    }
+    
+    nav div {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    nav a, nav button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Dashboard Layout */
+    .dashboard {
+        padding: 0 1rem;
+        margin: 1rem auto;
+    }
+    
+    /* Add Training Form */
+    .add-training {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .add-training h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .input-group {
+        margin-bottom: 1rem;
+    }
+    
+    .input-group input,
+    .input-group textarea {
+        padding: 0.8rem;
+        padding-left: 2.5rem;
+        font-size: 1rem;
+    }
+    
+    .input-group i {
+        left: 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .add-training form button {
+        width: 100%;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+    
+    #cancel-btn {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+    
+    /* Backup Section */
+    .backup-section {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .backup-section h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .backup-actions {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .backup-actions .btn,
+    .backup-actions label {
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem;
+        font-size: 0.95rem;
+    }
+    
+    /* Manage Trainings */
+    .manage-trainings {
+        padding: 1.5rem;
+    }
+    
+    .manage-trainings h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* History Tabs */
+    .history-tabs {
+        padding: 0.4rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .tab-btn {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+        gap: 0.4rem;
+    }
+    
+    .tab-btn i {
+        font-size: 1rem;
+    }
+    
+    /* Training Items */
+    .training-item {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1.2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .training-item-info {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .training-item-info h4 {
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .training-item-info p {
+        font-size: 0.9rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    .training-item-actions {
+        flex-direction: row;
+        gap: 0.8rem;
+        width: 100%;
+    }
+    
+    .training-item-actions .btn {
+        flex: 1;
+        padding: 0.7rem;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        padding: 2rem 1rem;
+        margin: 1rem 0;
+    }
+    
+    .empty-state i {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .empty-state h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .empty-state p {
+        font-size: 0.9rem;
+    }
+    
+    /* Hero Section */
+    .hero {
+        padding: 2rem 1rem;
+    }
+    
+    .hero h2 {
+        font-size: 1.8rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    /* Training Cards */
+    .trainings {
+        grid-template-columns: 1fr;
+        padding: 0 1rem;
+        gap: 1.5rem;
+    }
+    
+    .training-card {
+        padding: 1.2rem;
+    }
+    
+    .training-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .training-info span {
+        font-size: 0.9rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    .training-actions {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .training-actions .btn {
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra small screens */
+    .dashboard {
+        padding: 0 0.5rem;
+    }
+    
+    .add-training,
+    .manage-trainings {
+        padding: 1rem;
+    }
+    
+    .backup-section {
+        padding: 0.8rem;
+    }
+    
+    .training-item {
+        padding: 1rem;
+    }
+    
+    nav h1 {
+        font-size: 1.1rem;
+    }
+    
+    .hero h2 {
+        font-size: 1.5rem;
+    }
+}
+/* Mobile responsive for training cards with background images */
+@media (max-width: 768px) {
+    .training-card {
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        background-position: center !important;
+        min-height: 300px;
+        position: relative;
+    }
+    
+    .training-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 8px;
+        z-index: 1;
+    }
+    
+    .training-card > * {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .training-card h3,
+    .training-card .training-info,
+    .training-card p,
+    .training-card .training-actions {
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+}

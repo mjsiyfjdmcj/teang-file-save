@@ -1,0 +1,48 @@
+/* Logo Styling */
+.logo {
+    height: 120px;
+    width: auto;
+    margin-right: 0;
+    vertical-align: middle;
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* Header Transparent Background */
+header {
+    background: transparent !important;
+    color: #2c3e50 !important;
+    border-bottom: none;
+}
+
+nav h1 {
+    color: #2c3e50 !important;
+    margin: 0;
+}
+
+nav a, nav button {
+    color: #2c3e50 !important;
+    border-color: #27ae60 !important;
+}
+
+/* Mobile Logo */
+@media (max-width: 768px) {
+    .logo {
+        height: 100px;
+        margin-right: 0;
+        background: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+}
+
+/* Desktop Compact Logo */
+@media (min-width: 769px) {
+    .logo {
+        height: 120px;
+        margin-right: 0;
+    }
+}
